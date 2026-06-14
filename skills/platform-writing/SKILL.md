@@ -12,6 +12,10 @@ Turn a strategy/outline into finished, platform-native copy. The critical thing:
 - After `content-strategy` produces an outline
 - User asks directly for a specific platform's copy: "帮我写篇公众号文章" / "写个小红书文案"
 
+## Brand
+
+If the workspace has a **`brand.md`** (the self-media brand spec), follow it for every piece: the account name, slogan, **CTA sign-off** (sign as the brand — e.g. "关注「黯镜 AI」" — not a generic "关注我"), and visual identity. Keep the brand consistent across all platforms and reference the brand's site if it declares one. Read `brand.md` at the workspace root before writing.
+
 ## Process
 
 ### 1. Identify the target platform(s)
