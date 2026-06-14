@@ -1,0 +1,18 @@
+{
+  "name": "media-pilot",
+  "version": "0.1.0",
+  "description": "Autonomous self-media content engine: discovers trending topics from global sources, writes platform-tailored copy (WeChat, Xiaohongshu, Douyin, Bilibili), and produces videos. Inspired by the superpowers proactive-skill architecture.",
+  "author": {
+    "name": "cong",
+    "email": "cong@example.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "self-media",
+    "content-creation",
+    "trending",
+    "video",
+    "writing",
+    "automation"
+  ]
+}

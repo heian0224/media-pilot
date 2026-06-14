@@ -1,0 +1,8 @@
+# Output artifacts
+content/
+*.mp4
+*.mp3
+*.jsonl
+node_modules/
+.DS_Store
+*.log

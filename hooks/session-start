@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# SessionStart hook for media-pilot plugin
+# Injects the using-media-pilot skill content so it proactively activates
+# whenever the user is doing content-related work.
+
+set -euo pipefail
+
+# Determine plugin root directory
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# Read using-media-pilot content
+USING_SKILL="${PLUGIN_ROOT}/skills/using-media-pilot/SKILL.md"
+if [ ! -f "$USING_SKILL" ]; then
+  exit 0
+fi
+
+USING_CONTENT=$(cat "$USING_SKILL" 2>/dev/null || echo "Error reading using-media-pilot skill")
+
+# Escape string for JSON embedding
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+ESCAPED=$(escape_for_json "$USING_CONTENT")
+
+SESSION_CONTEXT="<EXTREMELY_IMPORTANT>\nYou have media-pilot — an autonomous self-media content engine.\n\nBelow is the full content of your 'media-pilot:using-media-pilot' skill, your introduction to discovering topics, writing platform copy, and producing videos. For all other media-pilot skills, use the Skill tool.\n\n${ESCAPED}\n</EXTREMELY_IMPORTANT>"
+
+# Output context injection. Cursor uses additional_context;
+# Claude Code uses hookSpecificOutput.additionalContext;
+# Copilot CLI / others use top-level additionalContext.
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+  printf '{\n  "additional_context": "%s"\n}\n' "$SESSION_CONTEXT"
+elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$SESSION_CONTEXT"
+else
+  printf '{\n  "additionalContext": "%s"\n}\n' "$SESSION_CONTEXT"
+fi
+
+exit 0
