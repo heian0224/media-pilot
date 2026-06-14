@@ -12,7 +12,7 @@ Media-Pilot turns a topic — or just *"find me something worth writing about"* 
 
 - **🔬 Discovery** — Pulls real trending signals from Chinese platforms (微博 / 抖音 / 百度 / 知乎 / B站 / 36氪 / 虎嗅) **and** international tech media (Hacker News, Reddit, GitHub Trending, dev.to, arXiv, Twitter/X, AI lab blogs from OpenAI / Anthropic / DeepMind / Meta / Mistral). For tech/AI topics it surfaces trends **1–4 weeks before** they reach Chinese platforms.
 - **🎯 Strategy** — Picks content angles and maps each one to the right platforms.
-- **✍️ Platform writing** — Drafts native copy in each platform's distinct voice: long-form WeChat articles, emoji-heavy Xiaohongshu posts, hook-driven Douyin scripts, deep Bilibili content. Emits an `images.md` prompts doc so you can generate visuals in your own tool.
+- **✍️ Platform writing** — Drafts native copy in each platform's distinct voice: long-form WeChat articles, emoji-heavy Xiaohongshu posts, hook-driven Douyin scripts, deep Bilibili content. Emits **platform-specific** image-prompt docs (`wechat-images.md`, `xiaohongshu-images.md`) so you can generate visuals in your own tool.
 - **🎬 Video** — Turns scripts into narrated MP4s with **HyperFrames** (local HTML→MP4 renderer) + **MiniMax TTS** (fluent Mandarin). No HeyGen, no avatar API, no per-minute billing.
 
 ## 🧠 How it works
@@ -94,14 +94,14 @@ media-workspace/
 │           ├── using-media-pilot/ # Meta-skill (proactive trigger)
 │           ├── content-discovery/ # Trending research
 │           ├── content-strategy/  # Angle + platform mapping
-│           ├── platform-writing/  # Drafts per platform + images.md prompts
+│           ├── platform-writing/  # per-platform copy + wechat-images.md / xiaohongshu-images.md
 │           └── video-production/  # HyperFrames + MiniMax TTS
 │               └── scripts/minimax_tts.sh
 └── content/                       # generated content (one folder per topic)
     └── <YYYY-MM-DD-topic-slug>/
         ├── discovery.md · strategy.md
         ├── wechat.md · xiaohongshu.md · douyin-script.md · bilibili.md
-        ├── images.md              # image-generation prompts (manual)
+        ├── wechat-images.md · xiaohongshu-images.md  # per-platform image prompts (manual)
         ├── audio/                 # MiniMax narration mp3s + manifest.json
         └── douyin.mp4 · xiaohongshu.mp4 · bilibili.mp4
 ```
@@ -121,14 +121,14 @@ All skills write to `content/<YYYY-MM-DD-topic-slug>/` — the discovery stage c
 Each topic produces one folder under `content/`:
 - **Research & plan** — `discovery.md`, `strategy.md`
 - **Copy** — `wechat.md`, `xiaohongshu.md`, `douyin-script.md`, `bilibili.md`
-- **Visuals** — `images.md` (image-generation prompts; generate in your own tool)
+- **Visuals** — `wechat-images.md` / `xiaohongshu-images.md` (per-platform image prompts; generate in your own tool)
 - **Video** — `audio/` (MiniMax narration) + `douyin.mp4` / `xiaohongshu.mp4` / `bilibili.mp4`
 
 ## ⚠️ Notes & limitations
 
 - **No auto-publishing.** Media-Pilot produces ready-to-post files; you do the final posting to each platform.
 - **No fabricated trends.** Discovery uses real web search; if search is unavailable or rate-limited, it says so honestly.
-- **Images are manual.** It emits an `images.md` prompts doc; bring your own image tool (AI image quality for Chinese-text diagrams is unreliable, so text is overlaid by hand).
+- **Images are manual.** It emits per-platform prompt docs (`wechat-images.md`, `xiaohongshu-images.md`); bring your own image tool (AI image quality for Chinese-text diagrams is unreliable, so text is overlaid by hand).
 - **International-first for tech topics.** For AI/tech, international sources are checked first — they lead Chinese platforms by weeks.
 
 ## 🤝 Contributing

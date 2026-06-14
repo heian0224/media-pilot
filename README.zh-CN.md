@@ -10,7 +10,7 @@
 
 - **🔬 选题发现** — 同时抓中文平台（微博 / 抖音 / 百度 / 知乎 / B站 / 36氪 / 虎嗅）和国际技术媒体（Hacker News、Reddit、GitHub Trending、dev.to、arXiv、Twitter/X、各家 AI 实验室博客）的真实热度信号。技术 / AI 选题能**领先国内平台 1–4 周**发现。
 - **🎯 策略** — 选定角度，把内容映射到合适的平台。
-- **✍️ 平台写作** — 按各平台调性出稿：公众号深度长文、小红书 emoji 种草、抖音钩子口播、B站硬核内容。另出一份 `images.md` 配图提示词文档，方便你用自己的工具出图。
+- **✍️ 平台写作** — 按各平台调性出稿：公众号深度长文、小红书 emoji 种草、抖音钩子口播、B站硬核内容。另出**按平台分文件**的配图提示词（`wechat-images.md` / `xiaohongshu-images.md`），方便你用自己的工具出图。
 - **🎬 视频** — 脚本 → 带配音的 MP4，用 **HyperFrames**（本地 HTML→MP4 渲染）+ **MiniMax TTS**（流畅中文）。不需要 HeyGen、不需要数字人 API、不按分钟计费。
 
 ## 🧠 工作原理
@@ -92,14 +92,14 @@ media-workspace/
 │           ├── using-media-pilot/ # 元技能（主动触发）
 │           ├── content-discovery/ # 热点调研
 │           ├── content-strategy/  # 角度 + 平台映射
-│           ├── platform-writing/  # 各平台写作 + images.md 配图提示词
+│           ├── platform-writing/  # 各平台写作 + wechat-images.md / xiaohongshu-images.md
 │           └── video-production/  # HyperFrames + MiniMax TTS
 │               └── scripts/minimax_tts.sh
 └── content/                       # 产出内容（每个选题一个文件夹）
     └── <YYYY-MM-DD-topic-slug>/
         ├── discovery.md · strategy.md
         ├── wechat.md · xiaohongshu.md · douyin-script.md · bilibili.md
-        ├── images.md              # 配图提示词（手工出图用）
+        ├── wechat-images.md · xiaohongshu-images.md  # 按平台的配图提示词（手工出图）
         ├── audio/                 # MiniMax 配音 mp3 + manifest.json
         └── douyin.mp4 · xiaohongshu.mp4 · bilibili.mp4
 ```
@@ -119,14 +119,14 @@ media-workspace/
 每个选题在 `content/` 下一个文件夹：
 - **调研 + 计划** — `discovery.md`、`strategy.md`
 - **文案** — `wechat.md`、`xiaohongshu.md`、`douyin-script.md`、`bilibili.md`
-- **配图** — `images.md`（配图提示词，用自己的工具出图）
+- **配图** — `wechat-images.md` / `xiaohongshu-images.md`（按平台的配图提示词，用自己的工具出图）
 - **视频** — `audio/`（MiniMax 配音）+ `douyin.mp4` / `xiaohongshu.mp4` / `bilibili.mp4`
 
 ## ⚠️ 说明与限制
 
 - **不自动发布。** 只产出可发布的文件，最终发到各平台由你手动完成。
 - **不编造热点。** 发现用真实联网搜索；搜索不可用或被限流时如实说明，绝不编。
-- **配图需手工。** 出 `images.md` 提示词文档，用自己的图像工具生成（AI 生成带中文的图容易乱码，文字部分建议手工叠加）。
+- **配图需手工。** 出按平台的提示词文档（`wechat-images.md` / `xiaohongshu-images.md`），用自己的图像工具生成（AI 生成带中文的图容易乱码，文字部分建议手工叠加）。
 - **技术选题优先看国际源。** AI / 技术话题先查国际源——它们领先国内平台数周。
 
 ## 🤝 贡献

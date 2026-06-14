@@ -59,16 +59,22 @@ Save each piece as a separate file inside the working directory (`content/<YYYY-
 
 Tell the user where each file is and offer to produce video for the platforms that need it (抖音/小红书 → invoke `video-production`).
 
-### 5. Produce a 配图 prompts document
+### 5. Produce platform-specific 配图 prompt docs
 
-Most pieces need visuals — at minimum a 封面; 公众号 wants ~1 cover + 1 per ~500字, 小红书 wants 6-9 张 (first = cover), 抖音/B站 want a 视频封面. We do **not** auto-generate images (AI image quality is unreliable and Chinese text garbles); instead produce a prompts document the user feeds to their own image tool by hand:
+Written platforms need visuals; we do **not** auto-generate images (AI image quality is unreliable and Chinese text garbles). Instead produce a **platform-specific** prompts doc the user feeds to their own image tool — **one file per platform**, because each platform's images differ in aspect ratio, density, and style:
 
-1. **Save `images.md`** in the working dir. For each image list: slot/purpose, target aspect ratio, a ready-to-paste prompt, and (for diagrams) the exact text to overlay manually.
-2. **Lock a consistent visual style up top** — shared palette, line weight, mood — so the whole set looks cohesive when the user generates them.
-3. **Chinese-text-heavy diagrams**: write the prompt to produce a clean visual scaffold with **no in-image text**, then list the Chinese labels to overlay in Figma/Canva/PS. Never ask the image model to render Chinese characters.
-4. **Reference the image slots from the copy** (mark 配图 positions inline) so the user knows where each one goes.
+- **公众号** → `wechat-images.md` — 16:9 封面 + ~1 per 500字, denser / diagram-friendly, formal depth style. See `references/wechat.md` → 配图要求.
+- **小红书** → `xiaohongshu-images.md` — 3:4 竖版, 6–9 张, 封面 = 点击率, 文字卡为主. See `references/xiaohongshu.md` → 配图要求.
+- **抖音 / B站** → no separate image set (visuals are built into the video in `video-production`).
 
-Tell the user `images.md` is ready to feed into their image tool. For platforms that need **video** (抖音/小红书), continue to `video-production` after copy + 配图 prompts are ready.
+Do **not** produce a single generic `images.md` — always split by platform. For each platform file you produce:
+
+1. **For each image** list: slot/purpose, target aspect ratio, a ready-to-paste prompt, and the exact Chinese text to overlay manually.
+2. **Lock a consistent visual style up top** per file — shared palette, line weight, mood — so the set looks cohesive.
+3. **Chinese-text-heavy diagrams**: prompt for a clean scaffold with **no in-image text**, then list the Chinese labels to overlay in Figma/Canva/PS. Never ask the image model to render Chinese characters.
+4. **Reference the image slots from the copy** (mark 配图 positions inline) so the user knows where each goes.
+
+Tell the user which `<platform>-images.md` files are ready. For platforms that need **video** (抖音/小红书), continue to `video-production` after copy + 配图 prompts are ready.
 
 ## Writing Quality Standards
 
