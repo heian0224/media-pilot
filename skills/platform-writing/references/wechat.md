@@ -43,6 +43,7 @@ Long-form, depth-oriented content for a reader who chose to open the article. Th
 - **中文一律后期叠**：AI 直出中文基本乱码——prompt 生成**无字底图**，再用 Figma / Canva 叠中文（标题、数据标签、图注）。每张图在 prompt 旁列出 **"叠字内容"**。
 - **全套风格统一**：同一套调色板 / 质感 / 线宽，封面到结尾一气呵成。
 - **每张配齐**：用途、比例、叠字内容、画面描述、可直接喂出图工具的 prompt。
+- **末尾品牌收尾图：固定复用一张品牌收尾图（`brand/assets/wechat-signoff.png`，按 workspace 根目录 `brand.md` 的账号名 / slogan / 站点 / 关注 CTA 制作一次），所有文章共用，不要每篇重新生成。** 文章专属金句写进正文（不进末尾图）。配图清单里不要再列「结尾引导图」。
 
 > 公众号图**可以比小红书密**（读者在正文里细看），但仍要避免 AI 直出中文——数据图的坐标轴 / 标签都手工叠。
 

@@ -14,7 +14,7 @@ Turn a strategy/outline into finished, platform-native copy. The critical thing:
 
 ## Brand
 
-If the workspace has a **`brand.md`** (the self-media brand spec), follow it for every piece: the account name, slogan, **CTA sign-off** (sign as the brand — e.g. "关注「黯镜 AI」" — not a generic "关注我"), and visual identity. Keep the brand consistent across all platforms and reference the brand's site if it declares one. Read `brand.md` at the workspace root before writing.
+If the workspace has a **`brand.md`** (the self-media brand spec), follow it for every piece: the account name, slogan, **CTA sign-off** (sign as the brand — e.g. "关注「<品牌名>」" using the account name from `brand.md`, not a generic "关注我"), and visual identity. Keep the brand consistent across all platforms and reference the brand's site if it declares one. Read `brand.md` at the workspace root before writing.
 
 ## Process
 
