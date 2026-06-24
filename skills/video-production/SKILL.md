@@ -60,7 +60,16 @@ bash plugins/media-pilot/skills/video-production/scripts/minimax_tts.sh \
 - **Model/voice**: `speech-2.8-hd`, default voice `male-qn-qingse` (Mandarin). Other `z*` voices available.
 - **Endpoint**: `POST https://api.minimaxi.com/v1/t2a_v2`, `Authorization: Bearer $MINIMAX_API_KEY`. Response `data.audio` is hex-encoded mp3 → decode to file.
 - **Network — critical**: reach MiniMax **direct, with `--http1.1`**, and `unset` all `*proxy*` env vars first. Routing through a proxy causes TLS errors (connection reset / HTTP2 framing / SSL_ERROR_SYSCALL). From a domestic CN IP, direct works fine.
-- **Wiring into the composition**: each scene's narration is a timed `<audio class="clip" data-start data-duration data-track-index src="sceneN.mp3">`. Scene N's `data-start` = sum of previous scenes' durations (read from `manifest.json`).
+- **Wiring into the composition**: each scene's narration is a timed `<audio id="aud-sceneN" class="clip" data-start data-duration data-track-index src="sceneN.mp3">` — **the `id` is mandatory; without it the audio renders SILENT.** Scene N's `data-start` = sum of previous scenes' durations (read from `manifest.json`).
+
+## HyperFrames composition — rules that bite if missed
+
+- **Every timed element**: `class="clip"` + `data-start` + `data-duration` + `data-track-index`. Missing `class="clip"` → element never appears.
+- **`<audio>` MUST have an `id`** (e.g. `id="aud-scene1"`) — without it the render is **silent** (no error, just no sound). The #1 silent-failure trap.
+- **Register the timeline**: `window.__timelines = window.__timelines || {}; window.__timelines["main"] = gsap.timeline({ paused: true });` — paused, on `window.__timelines`.
+- **Trim each scene's `data-duration` by ~2ms** (`dur - 0.002`) so adjacent clips don't float-overlap and trip the linter.
+- **No external `@import` fonts/CSS** — fails offline; use generic `font-family: sans-serif` (headless Chrome renders CJK via system fallback like PingFang SC).
+- **To render**: the video project dir needs `package.json` + `meta.json` + `hyperframes.json` (copy from an existing video project), then `npx hyperframes render`.
 
 ## Process
 
