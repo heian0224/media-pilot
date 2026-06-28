@@ -6,3 +6,15 @@ content/
 node_modules/
 .DS_Store
 *.log
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# python build artifacts
+*.egg-info/
+__pycache__/
+*.pyc
+build/
+dist/

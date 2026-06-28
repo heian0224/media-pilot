@@ -25,6 +25,32 @@ Discovery → Strategy → Writing → Video
 
 Run the full pipeline, or any single stage.
 
+## 🤖 Two ways to run
+
+Media-Pilot is **both** a Claude Code plugin **and** a standalone autonomous agent (the `deepagent` Python package, built on [LangChain `deepagents`](https://docs.langchain.com/oss/python/deepagents/overview)). Same brand, same prompts, same tools — two front-ends:
+
+| | Claude Code plugin | Standalone `deepagent` |
+|---|---|---|
+| Runs in | the Claude Code REPL (interactive) | a plain Python process / cron |
+| Trigger | you chat with Claude | `python -m deepagent run --topic "..."` / `--auto` / `schedule --cron` |
+| Best for | hands-on, iterate per stage | **unattended / scheduled** daily content |
+
+### Standalone agent — quick start
+
+```bash
+pip install -e ./plugins/media-pilot            # installs the `deepagent` package
+python -m deepagent run --topic "GLM-4.6 开放智能体"   # fixed topic → full pipeline (+ video)
+python -m deepagent run --auto                          # autonomously pick a trending topic
+python -m deepagent run --auto --dry-run                # just pick + log, skip the pipeline
+python -m deepagent schedule --cron "7 9 * * *"         # print a crontab line (--install to add)
+```
+
+**Configure** (any of): an OpenAI-compatible LLM key + base URL (e.g. 智谱 GLM `https://open.bigmodel.cn/api/paas/v4`, model `glm-4.6`; works with DeepSeek / Moonshot / OpenAI too), `MINIMAX_API_KEY` (Mandarin narration), `GPT_IMAGE_API_KEY`+`GPT_IMAGE_ENDPOINT` (cover/section images), `TAVILY_API_KEY` (trend search). Put them in `.claude/settings.local.json` `env`, or a `.env`, or the real env. For image-text verification add a vision model (`LLM_VISION_MODEL=glm-4v-flash`).
+
+**Brand:** the repo is **brand-neutral** — copy [`brand.example.md`](./brand.example.md) to your workspace root as `brand.md` and fill it in; the agent reads it at runtime and applies your name/slogan/site/palette to every output.
+
+**Architecture:** an orchestrator deepagent + 4 specialized subagents (discovery / strategy / writing / video), context-isolated, passing artifacts by file path. See [`deepagent/`](./deepagent/) — `agent/` (wiring), `prompts/` (stage prompts, shared with the plugin), `tools/`, `motion_graphics/` (the HyperFrames composition engine), `scheduler/` (auto topic-pick + guardrails + cron).
+
 ## 📦 Requirements
 
 - **Claude Code** — this is a Claude Code plugin (not a standalone app)
@@ -90,13 +116,15 @@ media-workspace/
 │   └── media-pilot/               # ← this plugin
 │       ├── .claude-plugin/plugin.json
 │       ├── hooks/                 # SessionStart → injects using-media-pilot
-│       └── skills/
+│       ├── skills/
 │           ├── using-media-pilot/ # Meta-skill (proactive trigger)
 │           ├── content-discovery/ # Trending research
 │           ├── content-strategy/  # Angle + platform mapping
 │           ├── platform-writing/  # per-platform copy + wechat-images.md / xiaohongshu-images.md
 │           └── video-production/  # HyperFrames + MiniMax TTS
 │               └── scripts/minimax_tts.sh
+│       └── deepagent/             # standalone agent (deepagents): agent/ prompts/ tools/
+│                                 #   motion_graphics/ scheduler/ + _scripts/ (bundled, brand-driven)
 └── content/                       # generated content (one folder per topic)
     └── <YYYY-MM-DD-topic-slug>/
         ├── discovery.md · strategy.md
