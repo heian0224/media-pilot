@@ -23,6 +23,32 @@
 
 可跑完整流水线，也可单跑某个阶段。
 
+## 🤖 两种运行方式
+
+Media-Pilot **既是 Claude Code 插件，也是独立自主运行的 agent**（`deepagent` Python 包，基于 [LangChain `deepagents`](https://docs.langchain.com/oss/python/deepagents/overview)）。同一套品牌、prompt、工具、视频引擎——两个前端：
+
+| | Claude Code 插件 | 独立 `deepagent` |
+|---|---|---|
+| 跑在哪 | Claude Code REPL（交互） | 普通 Python 进程 / cron |
+| 触发 | 跟 Claude 对话 | `python -m deepagent run --topic "..."` / `--auto` / `schedule --cron` |
+| 适合 | 手动、逐阶段调 | **无人值守 / 定时**出内容 |
+
+### 独立 agent 快速上手
+
+```bash
+pip install -e ./plugins/media-pilot             # 装上 deepagent 包
+python -m deepagent run --topic "GLM-4.6 开放智能体"  # 定题 → 全流程（含视频）
+python -m deepagent run --auto                         # 自主选一个 trending 选题
+python -m deepagent run --auto --dry-run               # 只选题+记日志，不跑流水线
+python -m deepagent schedule --cron "7 9 * * *"        # 打印 crontab 行（--install 安装）
+```
+
+**配置**：OpenAI 兼容 LLM key + base URL（默认智谱 GLM `https://open.bigmodel.cn/api/paas/v4`，模型 `glm-4.6`；视觉 `glm-4v-flash` 用于图片文字核验；也支持 DeepSeek / Moonshot / OpenAI），`MINIMAX_API_KEY`（中文口播），`GPT_IMAGE_API_KEY`+`GPT_IMAGE_ENDPOINT`（封面/分节图），`TAVILY_API_KEY`（选题搜索）。放 `.claude/settings.local.json` 的 `env`、或 `.env`、或真实环境变量。
+
+**品牌**：仓库**品牌中立**——把 [`brand.example.md`](./brand.example.md) 拷成工作区根的 `brand.md` 填好，agent 运行时读取并应用到所有产出。
+
+**架构**：一个编排 agent + 4 个上下文隔离的子 agent（discovery / strategy / writing / video），产物靠**文件路径**传递。见 [`deepagent/`](./deepagent/) 目录。
+
 ## 📦 环境要求
 
 - **Claude Code** —— 这是一个 Claude Code 插件（不是独立 App）
