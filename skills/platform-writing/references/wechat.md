@@ -45,6 +45,19 @@ Long-form, depth-oriented content for a reader who chose to open the article. Th
 - **每张配齐**：用途、比例、画面描述、要烘焙的中文文字、可直接喂出图工具的 prompt。
 - **末尾品牌收尾图：固定复用一张品牌收尾图（`brand/assets/wechat-signoff.png`，按 workspace 根目录 `brand.md` 的账号名 / slogan / 站点 / 关注 CTA 制作一次），所有文章共用，不要每篇重新生成。** 文章专属金句写进正文（不进末尾图）。配图清单里不要再列「结尾引导图」。
 
+## 渲染成可粘贴的 HTML（`wechat.md` → `wechat.html`）
+
+公众号后台粘贴时会剥掉 `<style>` 和 class，只有 inline style 留得住——所以写完 `wechat.md`、出好配图 PNG 后，**必须跑渲染器**把品牌样式烘焙进每个元素，产出可直接粘贴的 `wechat.html`（见 `SKILL.md` 第 6 步）：
+
+```bash
+python3 plugins/media-pilot/skills/platform-writing/scripts/wechat_render.py content/<date>-<slug>/wechat.md
+```
+
+**在 `wechat.md` 里标记配图的方式**（渲染器按此插图，写错则图不出现）：
+- **封面**：正文第一个 `> 引用块` 自动作为导语 + 插入 `wechat-cover.png`，**不要再手动加封面图**（会重复）。
+- **正文配图**：用原生 markdown `![图注](wechat-<名>.png)` 写在想出现的位置（文件须存在，否则出占位卡）。**不要**用 `【配图N：…】` 这种纯文本标记——它会被当成字面文字、不插图。
+- **结尾**：含品牌名 + slogan 的段落/引用（如「黯镜 AI，折射未来幻想。」）会自动触发签名卡 + 收尾图。
+
 > 公众号图**可以比小红书密**（读者在正文里细看）——数据图的坐标轴、标签、图注都可以直接烘焙中文进图。
 
 ## Hook patterns that work

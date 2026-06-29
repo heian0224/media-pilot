@@ -80,6 +80,23 @@ Do **not** produce a single generic `images.md` — always split by platform. Fo
 
 Tell the user which `<platform>-images.md` files are ready. For platforms that need **video** (抖音/小红书), continue to `video-production` after copy + 配图 prompts are ready.
 
+### 6. Render paste-ready 公众号 HTML (wechat.md → wechat.html)
+
+公众号 is the one platform that needs an extra render step. The 公众号 web editor **strips `<style>` tags and CSS classes on paste** — only inline `style="..."` survives — so the brand theme must be baked into every element. Once the 公众号 copy (`wechat.md`) **and its 配图 PNGs** exist in the folder, run the bundled renderer:
+
+```bash
+python3 plugins/media-pilot/skills/platform-writing/scripts/wechat_render.py content/<date>-<slug>/wechat.md
+```
+
+It emits `wechat.html` next to the md (pure stdlib, no deps). Publish flow: open `wechat.html` in a browser → select the white article area → Ctrl+C → paste into the 公众号 editor (text + styles land in one paste) → upload the PNGs at the marked slots with the editor's 图片 tool.
+
+**Write `wechat.md` so images land correctly** — the renderer inserts images by these rules:
+- **Cover**: the first `> blockquote` becomes the lead and auto-inserts `wechat-cover.png`. Don't add a manual cover image (it would duplicate).
+- **Inline 配图**: use native markdown `![图注](wechat-<name>.png)` exactly where you want each image (the file must exist, else a placeholder card appears). **Do not** use bare text markers like `【配图N：…】` — they render as literal text and insert no image.
+- **Signoff**: a paragraph/blockquote containing the brand name + slogan (e.g. 「黯镜 AI，折射未来幻想。」) auto-triggers the brand signoff card + the shared `brand/assets/wechat-signoff.png` ending image.
+
+Run the renderer as the **last** 公众号 step (after `image-gen` has produced the PNGs). If images aren't generated yet, render again once they exist — `wechat.html` is regenerable any time. **公众号 only** — 小红书/抖音/B站 don't need this step.
+
 ## Writing Quality Standards
 
 The bar is "reads like a human creator who knows the platform wrote it," not "grammatically correct AI text." Specifically:
